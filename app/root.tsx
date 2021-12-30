@@ -11,7 +11,6 @@ import {
 } from 'remix'
 
 import type { LinksFunction } from 'remix'
-import { getCssText } from '~/stitches.config'
 
 import darkStylesUrl from '~/styles/dark.css'
 import globalStylesUrl from '~/styles/global.css'
@@ -38,11 +37,6 @@ function Document({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <style
-          id="stitches"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: getCssText() }}
-        />
         {title ? <title>{title}</title> : null}
         <Meta />
         <Links />
