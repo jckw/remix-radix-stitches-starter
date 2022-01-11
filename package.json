@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "remix-app-template",
-  "description": "",
+  "name": "build-ui",
+  "description": "喜歡的 UI 就要親手做出來",
   "license": "",
   "scripts": {
     "build": "remix build",
