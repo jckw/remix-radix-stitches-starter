@@ -1,6 +1,7 @@
-import { useLoaderData, json, Link } from 'remix'
+import { useLoaderData, json, Link } from 'remix';
 
-import type { MetaFunction, LoaderFunction } from 'remix'
+import type { MetaFunction, LinksFunction, LoaderFunction } from 'remix';
+import { styled } from '~/stitches.config'
 
 type IndexData = {
   resources: Array<{ name: string; url: string }>
@@ -53,6 +54,48 @@ export const meta: MetaFunction = () => ({
   description: 'Welcome to remix!',
 })
 
+export const links: LinksFunction = () => [
+  {
+    rel: 'apple-touch-icon',
+    href: '/favicons/apple-touch-icon.png',
+    sizes: '180x180'
+  },
+  {
+    rel: 'icon',
+    href: '/favicons/favicon-32x32.png',
+    sizes: '32x32',
+    type: 'image/png'
+  },
+  {
+    rel: 'icon',
+    href: '/favicons/favicon-16x16.png',
+    sizes: '16x16',
+    type: 'image/png'
+  },
+  {
+    rel: 'manifest',
+    href: '/favicons/site.webmanifest'
+  },
+  {
+    rel: 'mask-icon',
+    href: '/favicons/safari-pinned-tab.svg',
+    color: '#5bbad5'
+  },
+  {
+    rel: 'shortcut icon',
+    href: '/favicons/favicon.ico',
+    type: 'image/png'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&family=Overpass:ital,wght@0,300;0,400;0,600;0,800;1,400;1,700;1,800&display=swap'
+  }
+];
+
+const Hero = styled('h2', {
+  fontSize: '$24'
+});
+
 // https://remix.run/guides/routing#index-routes
 export default function Index() {
   const data = useLoaderData<IndexData>()
@@ -60,7 +103,7 @@ export default function Index() {
   return (
     <div className="remix__page">
       <main>
-        <h2>Welcome to Remix!</h2>
+        <Hero>Welcome to Remix!</Hero>
         <p>We're stoked that you're here. 🥳</p>
         <p>
           Feel free to take a look around the code to see how Remix does things,

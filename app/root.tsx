@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Link,
   Links,
@@ -8,22 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-} from 'remix'
+} from 'remix';
 
-import type { LinksFunction } from 'remix'
-
-import darkStylesUrl from '~/styles/dark.css'
-import globalStylesUrl from '~/styles/global.css'
-
-// https://remix.run/api/app#links
-export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: globalStylesUrl },
-  {
-    rel: 'stylesheet',
-    href: darkStylesUrl,
-    media: '(prefers-color-scheme: dark)',
-  },
-]
+import globalStyles from '~/utils/globalStyles';
 
 function Document({
   children,
@@ -32,8 +19,10 @@ function Document({
   children: React.ReactNode
   title?: string
 }) {
+  globalStyles();
+
   return (
-    <html lang="en">
+    <html lang="zh-Hant-TW">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
