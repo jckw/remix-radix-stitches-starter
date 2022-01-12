@@ -24,12 +24,14 @@ const DocumentBody = styled('body', {
       mobile: {
         grid: `"header" auto
                "main" 1fr
-               "footer" auto / 1fr`
+               "footer" auto / 1fr`,
+        rowGap: '$16'
       },
       desktop: {
         grid: `"header footer" auto
                "main footer" 1fr / 704px 320px`,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        columnGap: '$24'
       }
     }
   }
@@ -67,7 +69,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <Container as="main" responsive={{ '@initial': 'mobile', '@m768': 'tablet', '@m1200': 'desktop' }} area="main">
+      <Container as="main" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="main">
         {children}
       </Container>
       <Footer />

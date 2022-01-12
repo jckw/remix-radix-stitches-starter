@@ -3,15 +3,19 @@ import {
 } from 'remix';
 
 import LogoDark from '~/elements/LogoDark';
-// import { styled } from '~/stitches.config';
+import { styled } from '~/stitches.config';
 import { Container } from '~/utils/layout';
+
+const LogoLink = styled(Link, {
+  display: 'inline-block'
+});
 
 export default function Header() {
   return(
-    <Container as="header" responsive={{ '@initial': 'mobile', '@m768': 'tablet', '@m1200': 'desktop' }} area="header">
-      <Link to="/">
+    <Container as="header" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="header">
+      <LogoLink to="/">
         <LogoDark />
-      </Link>
+      </LogoLink>
     </Container>
   )
 }

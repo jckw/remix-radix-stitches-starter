@@ -87,6 +87,15 @@ export const links: LinksFunction = () => [
     type: 'image/png'
   },
   {
+    rel: 'preconnect',
+    href: 'https://fonts.googleapis.com'
+  },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossorigin: 'true'
+  },
+  {
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&family=Overpass:ital,wght@0,300;0,400;0,600;0,800;1,400;1,700;1,800&display=swap'
   }

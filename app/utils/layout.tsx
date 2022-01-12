@@ -8,9 +8,7 @@ export const Container = styled('div', {
         paddingTop: '$12'
       },
       tablet: {
-        paddingTop: '24px'
-      },
-      desktop: {
+        paddingTop: '24px',
         paddingX: '$0'
       }
     },
@@ -22,7 +20,15 @@ export const Container = styled('div', {
         gridArea: 'main'
       },
       footer: {
-        gridArea: 'footer'
+        gridArea: 'footer',
+        backgroundColor: 'hsl($shade20)'
+      }
+    },
+    footer: {
+      desktop: {
+        display: 'grid',
+        alignContent: 'space-between',
+        paddingTop: '120px'
       }
     }
   }
