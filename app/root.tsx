@@ -11,8 +11,29 @@ import {
 
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
+import { styled } from '~/stitches.config';
 import globalStyles from '~/utils/globalStyles';
 import { Container } from '~/utils/layout';
+
+const DocumentBody = styled('body', {
+  display: 'grid',
+  minHeight: '100vh',
+
+  variants: {
+    responsive: {
+      mobile: {
+        grid: `"header" auto
+               "main" 1fr
+               "footer" auto / 1fr`
+      },
+      desktop: {
+        grid: `"header footer" auto
+               "main footer" 1fr / 704px 320px`,
+        justifyContent: 'center'
+      }
+    }
+  }
+});
 
 function Document({
   children,
@@ -32,12 +53,12 @@ function Document({
         <Meta />
         <Links />
       </head>
-      <body>
+      <DocumentBody responsive={{ '@initial': 'mobile', '@m992': 'desktop' }}>
         {children}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
-      </body>
+      </DocumentBody>
     </html>
   )
 }
@@ -46,7 +67,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <Container as="main" responsive={{ '@initial': 'mobile', '@m992': 'tablet', '@m1200': 'desktop' }}>
+      <Container as="main" responsive={{ '@initial': 'mobile', '@m768': 'tablet', '@m1200': 'desktop' }} area="main">
         {children}
       </Container>
       <Footer />

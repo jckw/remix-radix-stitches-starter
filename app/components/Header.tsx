@@ -8,7 +8,7 @@ import { Container } from '~/utils/layout';
 
 export default function Header() {
   return(
-    <Container as="header" responsive={{ '@initial': 'mobile', '@m992': 'tablet', '@m1200': 'desktop' }}>
+    <Container as="header" responsive={{ '@initial': 'mobile', '@m768': 'tablet', '@m1200': 'desktop' }} area="header">
       <Link to="/">
         <LogoDark />
       </Link>
