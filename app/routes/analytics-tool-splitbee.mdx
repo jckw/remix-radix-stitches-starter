@@ -1,0 +1,110 @@
+---
+meta:
+  title: '簡單介紹輕量級訪客分析工具：Splitbee'
+  description: '業界™預設的使用者分析、統計工具是 Google Analytics，然而過於臃腫又不直覺的 GA4，驅使小專案改用 Splitbee。'
+published: true
+datePublished: '2021-08-11'
+dateModified: '2021-12-25'
+---
+
+# {attributes.meta.title}
+
+網站使用者的分析、統計工具，在業界 ™ 預設是 Google Analytics。然而，Google 推出 GA4 之後，臃腫的介面令人開始思考是否有替代方案。
+
+## 原因
+
+- 已經使用非常多 Google 服務，不想把雞蛋放在同個籃子裡
+- Google Analytics 經典版就讓人感到肥大，GA4 又更笨重
+- GA4 得靠 Firebase 送事件
+- GA4 查閱點擊事件的介面匪夷所思，事件若沒有匯入 Data Studio，只能看最近的 30 分鐘資料
+
+## Splitbee
+
+- `首頁`：https://splitbee.io
+- `文件`：https://splitbee.io/docs
+
+### 基本功能
+
+- 整體資訊
+  ![「專業人士的設計流程」近 7 天的訪客總覽](https://cdn.hashnode.com/res/hashnode/image/upload/v1628746900891/LIKwWW6H1.png)
+- 個別使用者資訊：哪裡來的、裝置訊息、近 6 個月該使用者在網站上的足跡
+  ![某位台灣使用者被 Splitbee 記錄的足跡](https://cdn.hashnode.com/res/hashnode/image/upload/v1628747218674/LMO1yEqSr.png)
+- 記錄外連網址，不必像 GA 得埋 Tag Manager 才知道
+
+### 還可以：
+
+- `Funnels` 設定好的頁面/事件轉換率
+- `Automation` 踩到某個頁面或觸發某個事件，就對使用者寄送 Email（註冊信），或是發送 Telegram 訊息（通知購買成功）
+- `Experiments` 進行 A/B 測試
+- 把統計資料輸出至 Notion
+
+## 安裝
+
+```
+<head>
+...
+  <script async src="https://cdn.splitbee.io/sb.js"></script>
+</head>
+```
+
+這段 `<script>` 放在每個頁面，去 Splitbee 新增專案就可以了，非常無腦。
+
+目前手上的專案都是蓋在 Next.js，所以不須特別設定，若是 Client Side Rendering，要用其他方法。
+
+## 自訂事件
+
+最基本只要在 HTML 標籤加上屬性 `data-splitbee-event`，點擊就會記錄成事件：
+
+```
+<button type="button" onClick={toggleScheme} data-splitbee-event="切換為暗色模式">
+```
+
+事件記錄也是 Server 端，如果以 onClick 事件修改屬性值，或直接打開 Dev Tools，在 Client 端改為 `data-splitbee-event="切換為亮色模式"`，事件仍是記錄 `切換為暗色模式`。
+
+還有，屬性 `data-splitbee-event-type` 是事件的副標題：
+
+```
+<a href="/process/01-project...html" data-splitbee-event="開始閱讀" data-splitbee-event-type="第 1 章">第 1 章</a>
+```
+
+![在 Splitbee 呈現事件的副標題](https://cdn.hashnode.com/res/hashnode/image/upload/v1628748957780/OwnaC4fGB.png)
+
+雖然 Splitbee 內建就會抓外連網址，如果這外連網址是很重要的轉換行為，還是要設定事件，才可以讓 `Funnel` 幫忙統計轉換率。
+![在 Splitbee 呈現外連網址的轉換率](https://cdn.hashnode.com/res/hashnode/image/upload/v1628749037786/TY0IF0nK-.png)
+
+## 用 Webhook 產生 Discord 訊息
+
+想在訪客踩到了重點關注的頁面或事件時收到通知，除了用 Telegram 訊息通知（ [官方教學](https://splitbee.io/docs/telegram-automations) ），也可以設定 Webhook，這裡以送通知到 Discord 的頻道為例。
+
+### 取得 Webhook 網址
+
+首先在 Discord 伺服器後台取得 Webhook 網址：
+Server Settings > Integrations > Webhooks > New Webhook
+
+![在 Discord 新增 Webhook](https://cdn.hashnode.com/res/hashnode/image/upload/v1633591264546/93obwVFZH.jpeg)
+
+按下 "Copy Webhook URL"
+
+### 設定 Automation
+
+![Splitbee 填入 Discord 的 Webhook](https://cdn.hashnode.com/res/hashnode/image/upload/v1633593941676/LiJbUWchZ.jpeg)
+把剛剛 "Copy Webhook URL" 的網址貼進來，並且設定通知訊息，格式是
+
+```
+{
+  "content": "<你的內容>"
+}
+```
+
+訊息內容提供訪客的資料，先在 `{ ... }` 外面按兩次 `{` 有提示。
+
+設定成功便可以在 Discord 收到像這樣的 Bot 訊息：
+![Bot 在 Discord 顯示 "New Visitor from Taiwan"](https://cdn.hashnode.com/res/hashnode/image/upload/v1633594179953/CUgIkdAiG.png)
+
+## 收費
+
+Splitbee 沒有把獲取的資料轉售，因此 1 個月內使用達到 `5,000 次事件`，或要團隊共用時，就會收費。
+
+## 還有更多替代方案
+
+[Amplitude](https://amplitude.com) 是許多企業規模團隊使用的分析、統計工具

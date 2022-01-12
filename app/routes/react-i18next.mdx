@@ -1,0 +1,109 @@
+---
+meta:
+  title: '使用 react-i18next 的瑣碎注意事項'
+  description: 'i18next 的文件寫得夠完整，所以在決定作品集要做多國語系時，用這一款來輔助。這篇文章記錄文件裡找不到，只好從 Issue 和 stackoverflow 翻找的問題解方。'
+published: true
+datePublished: '2021-09-01'
+dateModified: '2021-11-30'
+---
+
+# {attributes.meta.title}
+
+## 使用套件
+
+```
+"react": ^17.0.1,
+"next": 11.0.1,
+"next-i18next": ^8.5.5,
+"typescript": 4.3.2
+```
+
+覺得 [i18next](https://www.i18next.com) 的文件寫得夠完整，所以在決定[作品集](https://ymcheung.tw)要做多國語系時，用這一款來輔助，避免重新發明輪胎，[next-i18next](https://github.com/isaachinman/next-i18next) 又做好許多 `Next.js` 和 `i18next` 之間的整合。然而，使用上還是有向技術社群求助的經驗，在這一篇集合起來。
+
+## 使用特殊符號與 HTML 語法
+
+撰寫 HTML 的時候，遇到特殊符號，例如 &copy;，會去 [Character Entity Reference](https://dev.w3.org/html5/html-author/charref) 查詢（關鍵字打 _html5 entity_），並且寫成 `&copy;`。這樣寫在語系檔裡面，就會照樣輸出 `&copy;`。
+
+必須依賴 React 的 `dangerouslySetInnerHTML` 來顯示：
+
+```
+<ContentTitle dangerouslySetInnerHTML={{__html: t('intro.title')}} />
+```
+
+若在語系檔裡帶 HTML，也必須用這個方法來顯示，並且在雙引號加上 escape：
+
+```
+{
+"description":
+  "Get started with <a class=\"paragraph-link\" href=\"https://...\" target=\"_blank\" rel=\"noopener\">Onboarding</a>."
+}
+```
+
+`dangerouslySetInnerHTML` 的缺點是無法放置其他元件，結構寫起來很不一樣。
+
+## TypeScript 的陣列問題
+
+語系檔使用陣列的方法：
+
+```
+"document":
+{
+  "items":
+  [
+    {
+      "name":
+        "name 0",
+      "description":
+        "description 0"
+    },
+    {
+      "name":
+        "name 1",
+      "description":
+        "description 1"
+    }
+  ]
+}
+```
+
+這樣的 TS 寫法，在稍微舊一點的 `react-i18next` 版本是可行的
+
+```
+type itemProps = {
+  name: string;
+  description: string;
+  index: number;
+};
+
+{t<itemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }: itemProps) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
+
+然而在最近的版本出現 TS 錯誤：
+
+```
+Type 'itemProps[]' does not satisfy the constraint 'string | TemplateStringsArray'.
+  Property 'raw' is missing in type 'itemProps[]' but required in type 'TemplateStringsArray'.
+```
+
+`.map` 也有：
+
+```
+Property 'map' does not exist on type 'TFunctionResult'.
+  Property 'map' does not exist on type 'string'.ts(2339)
+```
+
+目前試出不會錯誤的定義，得要這樣做：
+
+```
+type itemProps = {
+  [x: string]: any;
+};
+```
+
+只是定義為 `any`，就沒有使用 TS 的意義。目前還沒有找到明確的解答。

@@ -108,7 +108,7 @@ export default function Footer() {
           <IntersectionName>Intersection</IntersectionName>
         </Intersection>
         <Message>
-          反饋、交互設計、優化、插件、高清、視頻：已經看膩這些中國用語。
+          優化、插件、反饋、交互設計、高清、視頻：已經看膩這些中國用語。
         </Message>
       </Section>
     </Container>
