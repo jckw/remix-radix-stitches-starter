@@ -7,6 +7,10 @@ datePublished: '2021-09-01'
 dateModified: '2021-11-30'
 ---
 
+import { Article } from '~/components/article';
+
+<Article>
+
 # {attributes.meta.title}
 
 ## 使用套件
@@ -43,7 +47,7 @@ dateModified: '2021-11-30'
 
 ## TypeScript 的陣列問題
 
-語系檔使用陣列的方法：
+多國語系檔有時候會想要使用陣列的方法來呈現：
 
 ```
 "document":
@@ -66,16 +70,16 @@ dateModified: '2021-11-30'
 }
 ```
 
-這樣的 TS 寫法，在稍微舊一點的 `react-i18next` 版本是可行的
+如果按照直覺來設定陣列型別：
 
 ```
-type itemProps = {
+type ItemProps = {
   name: string;
   description: string;
   index: number;
 };
 
-{t<itemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }: itemProps) => (
+{t('document.items', {returnObjects: true}).map(({ name, description, index }: ItemProps) => (
   <li key={index}>
      <strong dangerouslySetInnerHTML={{__html: name}} />
      <Paragraph dangerouslySetInnerHTML={{__html: description}} />
@@ -84,26 +88,52 @@ type itemProps = {
 )}
 ```
 
-然而在最近的版本出現 TS 錯誤：
-
+就會遇到錯誤訊息：
 ```
-Type 'itemProps[]' does not satisfy the constraint 'string | TemplateStringsArray'.
-  Property 'raw' is missing in type 'itemProps[]' but required in type 'TemplateStringsArray'.
+Property 'map' does not exist on type 'string'.
 ```
 
-`.map` 也有：
+2021-11-14 最近在 stackoverflow 找到解法：
+```
+{t<string, ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
 
+並且從前端社群得知這是設定為泛型，因為 i18next 的 returnObjects 允許回傳任何形式的物件，這是在告知型別檢查器說：這裡是陣列。
+做了一份 CodeSandbox 範例：
+
+[CodeSandbox 連結](https://codesandbox.io/s/react-i18next-typescript-array-example-5xdzk?file=/README.md)
+
+來源：Typescript i18next does not satisfy the constraint 'string | TemplateStringsArray NextJS
+先前在 Issue 找到的方法，已經過時：
+```
+{t<ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }: ItemProps) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
+
+所以會在最近的版本出現 TS 錯誤：
+```
+Type 'ItemProps[]' does not satisfy the constraint 'string | TemplateStringsArray'.
+  Property 'raw' is missing in type 'ItemProps[]' but required in type 'TemplateStringsArray'.
+```
+
+.map 也有：
 ```
 Property 'map' does not exist on type 'TFunctionResult'.
   Property 'map' does not exist on type 'string'.ts(2339)
 ```
 
-目前試出不會錯誤的定義，得要這樣做：
+## 結論
+`react-i18next` 的[說明文件](https://react.i18next.com/latest/typescript)上其實有 TypeScript 型別設定的教學，不過跟著做之後，在使用 `next-i18next` 的 Next.js 專案沒有效果（全部都是 `any`）。
 
-```
-type itemProps = {
-  [x: string]: any;
-};
-```
-
-只是定義為 `any`，就沒有使用 TS 的意義。目前還沒有找到明確的解答。
+</Article>

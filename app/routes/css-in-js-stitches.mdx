@@ -7,6 +7,10 @@ datePublished: '2021-07-28'
 dateModified: '2021-12-30'
 ---
 
+import { Article } from '~/components/article';
+
+<Article>
+
 # {attributes.meta.title}
 
 `Stitches` 是剛進入穩定 1.0.0 版本的 CSS-In-JS 套件，用起來已經相當成熟，常見的 CSS 規畫都能迎刃而解。
@@ -22,7 +26,6 @@ dateModified: '2021-12-30'
 React: ^17.0.0
 Next.js: 11.1.0
 ```
-
 這篇文章不會把 `Stitches` 文件裡提到的內容再講一遍，因為已經非常清楚，只會補充特色和小訣竅。
 
 `Stitches` 利用 `styled` 來撰寫 CSS 屬性，跟已經廣泛使用的 `styled-components` 同個方式，而我認為 `Stitches` 可以讓 CSS 樣式寫得更清楚，甚至補齊 CSS 先天沒有那麼方便的地方，`Variants` 功能可以說是 `Stitches` 之所以強大的核心。
@@ -217,3 +220,5 @@ const NameLabel = styled('span', label,
 ## 結論
 
 這裡記錄官方文件還沒有詳細說明的地方，但是寫 CSS 的體驗已經非常滿意，如果還有出現其他暫時解法或秘訣，會在這篇文章持續更新。
+
+</Article>

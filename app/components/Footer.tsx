@@ -13,11 +13,6 @@ const Section = styled('section', {
       tablet: {
         marginX: '$12'
       }
-    },
-    floor: {
-      ground: {
-        paddingBottom: 'calc(32px + env(safe-area-inset-bottom))'
-      }
     }
   }
 });
@@ -87,7 +82,7 @@ const Message = styled('p', {
 export default function Footer() {
 
   return(
-    <Container as="footer" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="footer" footer={{ '@m992': 'desktop' }}>
+    <Container as="footer" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="footer" footer={{ '@m992': 'desktop' }} floor="ground">
       <Section as="nav" responsive={{ '@m768': 'tablet' }}>
         <LinkList responsive={{ '@m992': 'desktop' }}>
           <ListItem nomark>
@@ -102,7 +97,7 @@ export default function Footer() {
           </ListItem>
         </LinkList>
       </Section>
-      <Section floor="ground" responsive={{ '@m768': 'tablet' }}>
+      <Section responsive={{ '@m768': 'tablet' }}>
         <Intersection>
           <IntersectionLogo src="/intersection.svg" alt="" />
           <IntersectionName>Intersection</IntersectionName>

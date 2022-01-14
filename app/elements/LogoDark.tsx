@@ -1,7 +1,7 @@
 import { styled } from '~/stitches.config';
 
 const Icon = styled('svg', {
-  width: 'clamp(288px, 75vw, 320px)',
+  width: 'clamp(256px, 75vw, 288px)',
   aspectRatio: '4 / 1'
 });
 

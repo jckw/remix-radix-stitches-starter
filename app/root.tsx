@@ -9,11 +9,59 @@ import {
   useCatch,
 } from 'remix';
 
+import type {  LinksFunction } from 'remix';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
 import { styled } from '~/stitches.config';
 import globalStyles from '~/utils/globalStyles';
 import { Container } from '~/utils/layout';
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'apple-touch-icon',
+    href: '/favicons/apple-touch-icon.png',
+    sizes: '180x180'
+  },
+  {
+    rel: 'icon',
+    href: '/favicons/favicon-32x32.png',
+    sizes: '32x32',
+    type: 'image/png'
+  },
+  {
+    rel: 'icon',
+    href: '/favicons/favicon-16x16.png',
+    sizes: '16x16',
+    type: 'image/png'
+  },
+  {
+    rel: 'manifest',
+    href: '/favicons/site.webmanifest'
+  },
+  {
+    rel: 'mask-icon',
+    href: '/favicons/safari-pinned-tab.svg',
+    color: '#5bbad5'
+  },
+  {
+    rel: 'shortcut icon',
+    href: '/favicons/favicon.ico',
+    type: 'image/png'
+  },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.googleapis.com'
+  },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'true'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&family=Overpass:ital,wght@0,300;0,400;0,600;0,800;1,400;1,700;1,800&display=swap'
+  }
+];
 
 const DocumentBody = styled('body', {
   display: 'grid',
@@ -69,7 +117,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <Container as="main" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="main">
+      <Container as="main" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="main" floor={{ '@m992': 'ground' }}>
         {children}
       </Container>
       <Footer />

@@ -7,6 +7,10 @@ datePublished: '2021-08-11'
 dateModified: '2021-12-25'
 ---
 
+import { Article } from '~/components/article';
+
+<Article>
+
 # {attributes.meta.title}
 
 網站使用者的分析、統計工具，在業界 ™ 預設是 Google Analytics。然而，Google 推出 GA4 之後，臃腫的介面令人開始思考是否有替代方案。
@@ -88,6 +92,7 @@ Server Settings > Integrations > Webhooks > New Webhook
 ### 設定 Automation
 
 ![Splitbee 填入 Discord 的 Webhook](https://cdn.hashnode.com/res/hashnode/image/upload/v1633593941676/LiJbUWchZ.jpeg)
+
 把剛剛 "Copy Webhook URL" 的網址貼進來，並且設定通知訊息，格式是
 
 ```
@@ -99,6 +104,7 @@ Server Settings > Integrations > Webhooks > New Webhook
 訊息內容提供訪客的資料，先在 `{ ... }` 外面按兩次 `{` 有提示。
 
 設定成功便可以在 Discord 收到像這樣的 Bot 訊息：
+
 ![Bot 在 Discord 顯示 "New Visitor from Taiwan"](https://cdn.hashnode.com/res/hashnode/image/upload/v1633594179953/CUgIkdAiG.png)
 
 ## 收費
@@ -107,4 +113,8 @@ Splitbee 沒有把獲取的資料轉售，因此 1 個月內使用達到 `5,000 
 
 ## 還有更多替代方案
 
+[Plausible Analytics](https://plausible.io) 是開源的統計分析套件，比 GA 小 45 倍，且不用放 GDPR 聲明。
+
 [Amplitude](https://amplitude.com) 是許多企業規模團隊使用的分析、統計工具
+
+</Article>

@@ -14,14 +14,25 @@ export const Container = styled('div', {
     },
     area: {
       header: {
-        gridArea: 'header'
+        gridArea: 'header',
+        position: 'sticky',
+        top: 0,
+        backgroundColor: 'hsla($shade10, 0.8)',
+        backdropFilter: 'blur(4px)'
       },
       main: {
-        gridArea: 'main'
+        gridArea: 'main',
+        minWidth: 0,
+        paddingBottom: ''
       },
       footer: {
         gridArea: 'footer',
         backgroundColor: 'hsl($shade20)'
+      }
+    },
+    header: {
+      desktop: {
+        margin: '0 -$16'
       }
     },
     footer: {
@@ -29,6 +40,11 @@ export const Container = styled('div', {
         display: 'grid',
         alignContent: 'space-between',
         paddingTop: '120px'
+      }
+    },
+    floor: {
+      ground: {
+        paddingBottom: 'calc(32px + env(safe-area-inset-bottom))'
       }
     }
   }

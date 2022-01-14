@@ -12,7 +12,7 @@ const LogoLink = styled(Link, {
 
 export default function Header() {
   return(
-    <Container as="header" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="header">
+    <Container as="header" responsive={{ '@initial': 'mobile', '@m768': 'tablet' }} area="header" header={{ '@m992': 'desktop' }}>
       <LogoLink to="/">
         <LogoDark />
       </LogoLink>
