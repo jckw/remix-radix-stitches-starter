@@ -73,13 +73,13 @@ const DocumentBody = styled('body', {
         grid: `"header" auto
                "main" 1fr
                "footer" auto / 1fr`,
-        rowGap: '$16'
+        rowGap: '$24'
       },
       desktop: {
         grid: `"header footer" auto
-               "main footer" 1fr / 704px 320px`,
+               "main footer" 1fr / 640px 320px`,
         justifyContent: 'center',
-        columnGap: '$24'
+        columnGap: '64px'
       }
     }
   }

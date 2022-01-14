@@ -7,6 +7,7 @@ export const { css, styled, globalCss, createTheme, keyframes, getCssText } = cr
     colors: {
       shade150: '210,8%,95%',
       shade130: '210,8%,84%',
+      shade100: '210,1%,64%',
       shade20: '210,4%,16%',
       shade10: '210,4%,10%',
 

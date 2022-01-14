@@ -19,3 +19,23 @@ export const Article = styled('article', {
     overflowX: 'auto'
   }
 });
+
+export const ArticleHeading = styled('h2', {
+  variants: {
+    purpose: {
+      index: {
+        margin: '0 0 $12',
+        color: 'hsl($shade150)',
+        fontSize: '2.4rem',
+        lineHeight: '32px'
+      }
+    }
+  }
+});
+
+export const ArticleDescription = styled('p', {
+  margin: '0 0 $16',
+  color: 'hsl($shade130)',
+  fontSize: '$16',
+  lineHeight: '24px'
+});

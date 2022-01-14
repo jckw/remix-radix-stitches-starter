@@ -1,22 +1,23 @@
 import { useLoaderData, Link } from 'remix';
 
-// import { styled } from '~/stitches.config';
 import * as postSplitbee from './analytics-tool-splitbee.mdx';
 import * as postStitches from './css-in-js-stitches.mdx';
 import * as postNaming from './naming-conventions.mdx';
 import * as postI18next from './react-i18next.mdx';
 
 import type { MetaFunction, LoaderFunction } from 'remix';
+import { ArticleHeading, ArticleDescription } from '~/components/article';
+import { styled } from '~/stitches.config';
+import { ListItem } from '~/utils/layout';
 
 // https://remix.run/api/conventions#meta
 export const meta: MetaFunction = () => ({
   title: '喜歡的 UI 就要親手做出來',
-  description: 'Welcome to remix!',
+  description: '做 UI 也想要寫程式。用 Figma 畫的 UI 要怎麼做出來，自己最清楚。',
 })
 
 type mdxData = {
   filename: string,
-  // demos: Array<{ name: string, to: string }>
   attributes: {
     meta: {
       title: string,
@@ -34,7 +35,6 @@ type postData = {
   published: boolean,
   dateModified: string
 }
-
 
 function postFromModule({ filename, attributes }: mdxData) {
   return {
@@ -58,24 +58,71 @@ export const loader: LoaderFunction = () =>
   postFromModule(postI18next)
 ];
 
+const IndexList = styled('ul', {
+  display: 'grid',
+  rowGap: '48px',
+  margin: 0,
+  padding: 0
+});
 
+const IndexLink = styled(Link, {
+  display: 'block',
+  textDecoration: 'none'
+});
+
+const Timestamp = styled('time', {
+  display: 'inline-block',
+  margin: '0 0 $16 -$16',
+  color: 'hsl($shade100)',
+  fontSize: '$14',
+  lineHeight: '12px',
+
+  '&::before': {
+    display: 'inline-block',
+    width: '$60',
+    height: '$12',
+    content: '',
+    marginRight: '$8',
+    backgroundColor: 'hsl($shade20)'
+  }
+});
+
+const Action = styled('span', {
+  display: 'block',
+  width: '100px',
+  margin: '0 -$16 0 auto',
+  paddingRight: '$16',
+  color: 'hsl($shade10)',
+  fontSize: '1.6rem',
+  fontWeight: 600,
+  lineHeight: '40px',
+  textAlign: 'right',
+  backgroundColor: 'hsl($accent)'
+});
 
 // https://remix.run/guides/routing#index-routes
 export default function Index() {
   const posts = useLoaderData();
 
   return (
-      <ul>
+      <IndexList>
       {posts.map(({ title, slug, description, published, dateModified }: postData) => (
         published &&
-          <li key={slug}>
-            <Link to={slug}>
-              <h2>{title}</h2>
-              {dateModified}
-              <p>{description}</p>,
-            </Link>
-          </li>
+          <ListItem nomark key={slug}>
+            <IndexLink to={slug}>
+              <ArticleHeading purpose="index">
+                {title}
+              </ArticleHeading>
+              <Timestamp>
+                {dateModified}
+              </Timestamp>
+              <ArticleDescription>
+                {description}
+              </ArticleDescription>
+              <Action>閱讀</Action>
+            </IndexLink>
+          </ListItem>
       ))}
-    </ul>
+    </IndexList>
   )
 }
