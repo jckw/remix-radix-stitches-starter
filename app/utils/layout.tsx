@@ -39,7 +39,7 @@ export const Container = styled('div', {
       desktop: {
         display: 'grid',
         alignContent: 'space-between',
-        paddingTop: '120px'
+        paddingTop: '144px'
       }
     },
     floor: {

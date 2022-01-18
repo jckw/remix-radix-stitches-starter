@@ -72,10 +72,21 @@ const IndexLink = styled(Link, {
 
 const Timestamp = styled('time', {
   display: 'inline-block',
-  margin: '0 0 $16 -$16',
+  marginBottom: '$16',
   color: 'hsl($shade100)',
   fontSize: '$14',
   lineHeight: '12px',
+
+  variants: {
+    responsive: {
+      mobile: {
+        marginLeft: '-$16'
+      },
+      tablet: {
+        marginLeft: 0
+      }
+    }
+  },
 
   '&::before': {
     display: 'inline-block',
@@ -90,14 +101,25 @@ const Timestamp = styled('time', {
 const Action = styled('span', {
   display: 'block',
   width: '100px',
-  margin: '0 -$16 0 auto',
+  marginLeft: 'auto',
   paddingRight: '$16',
   color: 'hsl($shade10)',
   fontSize: '1.6rem',
   fontWeight: 600,
   lineHeight: '40px',
   textAlign: 'right',
-  backgroundColor: 'hsl($accent)'
+  backgroundColor: 'hsl($accent)',
+
+  variants: {
+    responsive: {
+      mobile: {
+        marginRight: '-$16'
+      },
+      tablet: {
+        marginRight: 0
+      }
+    }
+  },
 });
 
 // https://remix.run/guides/routing#index-routes
@@ -113,13 +135,15 @@ export default function Index() {
               <ArticleHeading purpose="index">
                 {title}
               </ArticleHeading>
-              <Timestamp>
+              <Timestamp responsive={{ '@initial': 'mobile', '@m768': 'tablet' }}>
                 {dateModified}
               </Timestamp>
               <ArticleDescription>
                 {description}
               </ArticleDescription>
-              <Action>閱讀</Action>
+              <Action responsive={{ '@initial': 'mobile', '@m768': 'tablet' }}>
+                閱讀
+              </Action>
             </IndexLink>
           </ListItem>
       ))}

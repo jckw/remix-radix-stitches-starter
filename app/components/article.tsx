@@ -5,18 +5,47 @@ export const Article = styled('article', {
   fontSize: '$16',
   fontFamily: '$default',
 
+  '& h1': {
+    margin: '0 0 $24',
+    fontSize: '3.2rem',
+    lineHeight: '40px'
+  },
+
+  '& h2': {
+    margin: '0 0 $8',
+    paddingTop: '$16'
+  },
+
   '& p': {
     margin: '0 0 $16'
   },
 
+  '& a': {
+    color: 'hsl($accent)'
+  },
+
+  '& ul': {
+    display: 'grid',
+    rowGap: '$8',
+    margin: '0 0 $16',
+    padding: '0 0 0 $16'
+  },
+
+  '& li': {
+    listStyle: 'square'
+  },
+
   '& img': {
-    maxWidth: '100%'
+    maxWidth: '100%',
+    margin: '$8 0'
   },
 
   '& pre': {
     margin: '0 0 $16',
-    padding: '$16 0',
-    overflowX: 'auto'
+    padding: '$16',
+    overflowX: 'auto',
+    border: '2px solid hsl($shade20)',
+    borderRadius: '12px'
   }
 });
 
@@ -38,4 +67,12 @@ export const ArticleDescription = styled('p', {
   color: 'hsl($shade130)',
   fontSize: '$16',
   lineHeight: '24px'
+});
+
+export const CodeInline = styled('code', {
+  display: 'inline-block',
+  padding: '0 $4',
+  color: 'hsl($decor)',
+  border: '1px solid hsl($shade20)',
+  borderRadius: '4px'
 });

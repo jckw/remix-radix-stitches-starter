@@ -11,7 +11,7 @@ const Section = styled('section', {
   variants: {
     responsive: {
       tablet: {
-        marginX: '$12'
+        marginX: '$16'
       }
     }
   }
@@ -40,7 +40,7 @@ const LinkList = styled('ul', {
 const FooterLink = styled(Link, {
   display: 'inline-block',
   padding: '$8 0 $16',
-  color: 'hsl($decor)',
+  color: 'hsl($shade150)',
   fontSize: '$16',
   lineHeight: '16px',
   textDecoration: 'none'
