@@ -2,7 +2,7 @@ import {
   Link
 } from 'remix';
 
-import { styled } from '~/stitches.config';
+import { styled, css } from '~/stitches.config';
 import { Container, ListItem } from '~/utils/layout';
 
 const Section = styled('section', {
@@ -37,7 +37,7 @@ const LinkList = styled('ul', {
   }
 });
 
-const FooterLink = styled(Link, {
+const footerLink = css({
   display: 'inline-block',
   padding: '$8 0 $16',
   color: 'hsl($shade150)',
@@ -86,14 +86,14 @@ export default function Footer() {
       <Section as="nav" responsive={{ '@m768': 'tablet' }}>
         <LinkList responsive={{ '@m992': 'desktop' }}>
           <ListItem nomark>
-            <FooterLink to="/translations" prefetch="intent">
+            <Link className={footerLink()} to="/translations" prefetch="intent">
               技術文件翻譯
-            </FooterLink>
+            </Link>
           </ListItem>
           <ListItem nomark>
-            <FooterLink to="https://intersection.tw">
+            <a className={footerLink()} href="https://intersection.tw" target="_blank" rel="noopener noreferrer">
               設計文章翻譯
-            </FooterLink>
+            </a>
           </ListItem>
         </LinkList>
       </Section>

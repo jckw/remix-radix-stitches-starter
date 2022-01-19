@@ -24,6 +24,7 @@ type mdxData = {
       description: string,
     },
     published: boolean,
+    sticker: string,
     dateModified: string
   }
 }
@@ -53,8 +54,8 @@ export const loader: LoaderFunction = () =>
   // index page.
 [
   postFromModule(postNaming),
-  postFromModule(postSplitbee),
   postFromModule(postStitches),
+  postFromModule(postSplitbee),
   postFromModule(postI18next)
 ];
 
@@ -68,6 +69,12 @@ const IndexList = styled('ul', {
 const IndexLink = styled(Link, {
   display: 'block',
   textDecoration: 'none'
+});
+
+const Sticker = styled('figure', {
+  height: '40px',
+  margin: '0 0 $8',
+  padding: 0
 });
 
 const Timestamp = styled('time', {
@@ -132,6 +139,9 @@ export default function Index() {
         published &&
           <ListItem nomark key={slug}>
             <IndexLink to={slug}>
+              <Sticker>
+                <img src={`/stickers/${slug}.svg`} alt="" />
+              </Sticker>
               <ArticleHeading purpose="index">
                 {title}
               </ArticleHeading>
