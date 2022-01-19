@@ -5,16 +5,28 @@ import * as postStitches from './css-in-js-stitches.mdx';
 import * as postNaming from './naming-conventions.mdx';
 import * as postI18next from './react-i18next.mdx';
 
-import type { MetaFunction, LoaderFunction } from 'remix';
+import type { MetaFunction, LoaderFunction, LinksFunction } from 'remix';
 import { ArticleHeading, ArticleDescription } from '~/components/article';
 import { styled } from '~/stitches.config';
+import * as CONSTANT from '~/utils/CONSTANTS';
 import { ListItem } from '~/utils/layout';
 
 // https://remix.run/api/conventions#meta
 export const meta: MetaFunction = () => ({
-  title: '喜歡的 UI 就要親手做出來',
-  description: '做 UI 也想要寫程式。用 Figma 畫的 UI 要怎麼做出來，自己最清楚。',
+  title: CONSTANT.SITENAME,
+  description: CONSTANT.SITEDESCRIPTION,
+  'og:title': CONSTANT.SITENAME,
+  'og:description': CONSTANT.SITEDESCRIPTION,
+  'og:url': `${process.env.HOSTNAME}`,
+  'og:image': `${process.env.HOSTNAME}/og/home.jpg`
 })
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'canonical',
+    href: `${process.env.HOSTNAME}`
+  }
+];
 
 type mdxData = {
   filename: string,
