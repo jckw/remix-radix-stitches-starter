@@ -17,14 +17,14 @@ export const meta: MetaFunction = () => ({
   description: CONSTANT.SITEDESCRIPTION,
   'og:title': CONSTANT.SITENAME,
   'og:description': CONSTANT.SITEDESCRIPTION,
-  'og:url': `${process.env.HOSTNAME}`,
-  'og:image': `${process.env.HOSTNAME}/og/home.jpg`
+  'og:url': 'https://build.intersection.tw',
+  'og:image': 'https://build.intersection.tw/og/home.jpg'
 })
 
 export const links: LinksFunction = () => [
   {
     rel: 'canonical',
-    href: `${process.env.HOSTNAME}`
+    href: 'https://build.intersection.tw'
   }
 ];
 

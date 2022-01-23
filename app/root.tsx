@@ -6,10 +6,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
+  useCatch
 } from 'remix';
 
-import type {  LinksFunction } from 'remix';
+import type { LinksFunction } from 'remix';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
 import { styled } from '~/stitches.config';
