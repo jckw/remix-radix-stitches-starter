@@ -1,9 +1,9 @@
 import { useLoaderData, Link } from 'remix';
 
-import * as postSplitbee from './analytics-tool-splitbee.mdx';
-import * as postStitches from './css-in-js-stitches.mdx';
-import * as postNaming from './naming-conventions.mdx';
-import * as postI18next from './react-i18next.mdx';
+import * as postSplitbee from '../../content/analytics-tool-splitbee.mdx';
+import * as postStitches from '../../content/css-in-js-stitches.mdx';
+import * as postNaming from '../../content/naming-conventions.mdx';
+import * as postI18next from '../../content/react-i18next.mdx';
 
 import type { MetaFunction, LoaderFunction, LinksFunction } from 'remix';
 import { ArticleHeading, ArticleDescription } from '~/components/article';
@@ -35,7 +35,7 @@ type mdxData = {
       title: string,
       description: string,
     },
-    published: boolean,
+    status: string,
     sticker: string,
     dateModified: string
   }
@@ -45,7 +45,7 @@ type postData = {
   title: string,
   slug: string,
   description: string,
-  published: boolean,
+  status: string,
   dateModified: string
 }
 
@@ -54,7 +54,7 @@ function postFromModule({ filename, attributes }: mdxData) {
     title: attributes.meta.title,
     slug: filename.replace(/\.mdx?$/, ""),
     description: attributes.meta.description,
-    published: attributes.published,
+    status: attributes.status,
     dateModified: attributes.dateModified
   };
 }
@@ -147,8 +147,8 @@ export default function Index() {
 
   return (
       <IndexList>
-      {posts.map(({ title, slug, description, published, dateModified }: postData) => (
-        published &&
+      {posts.map(({ title, slug, description, status, dateModified }: postData) => (
+        (status === 'published') &&
           <ListItem nomark key={slug}>
             <IndexLink to={slug}>
               <Sticker>
