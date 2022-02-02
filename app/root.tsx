@@ -92,6 +92,7 @@ function Document({
   children: React.ReactNode
   title?: string
 }) {
+
   globalStyles();
 
   return (

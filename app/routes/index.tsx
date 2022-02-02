@@ -31,11 +31,9 @@ export const links: LinksFunction = () => [
 type mdxData = {
   filename: string,
   attributes: {
-    meta: {
-      title: string,
-      description: string,
-    },
     status: string,
+    title: string,
+    description: string,
     sticker: string,
     dateModified: string
   }
@@ -51,9 +49,9 @@ type postData = {
 
 function postFromModule({ filename, attributes }: mdxData) {
   return {
-    title: attributes.meta.title,
+    title: attributes.title,
     slug: filename.replace(/\.mdx?$/, ""),
-    description: attributes.meta.description,
+    description: attributes.description,
     status: attributes.status,
     dateModified: attributes.dateModified
   };
