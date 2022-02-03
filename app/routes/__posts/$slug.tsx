@@ -26,7 +26,8 @@ export const meta: MetaFunction = ({ data }) => {
     title: _title,
     description: _description,
     slug,
-    cover
+    cover,
+    meta
   } = data?.frontmatter ?? {};
 
   const title = `${_title || 'Missing Title'} - ${SITENAME}`;
