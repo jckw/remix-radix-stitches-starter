@@ -10,7 +10,7 @@ type IBundleMdx = {
 };
 
 // `resolve` won't work in a non `.server.ts` file
-export const getContentPath = () => resolve("content");
+export const getContentPath = () => resolve('content');
 
 export const getFilePath = (contentPath: string, filename: string) =>
   resolve(contentPath, filename);

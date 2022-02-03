@@ -51,9 +51,8 @@ import { Article } from "~/components/article";
 
 ## 安裝
 
-```
+```html
 <head>
-...
   <script async src="https://cdn.splitbee.io/sb.js"></script>
 </head>
 ```
@@ -66,7 +65,7 @@ import { Article } from "~/components/article";
 
 最基本只要在 HTML 標籤加上屬性 `data-splitbee-event`，點擊就會記錄成事件：
 
-```
+```html
 <button type="button" onClick={toggleScheme} data-splitbee-event="切換為暗色模式">
 ```
 
@@ -74,7 +73,7 @@ import { Article } from "~/components/article";
 
 還有，屬性 `data-splitbee-event-type` 是事件的副標題：
 
-```
+```html
 <a href="/process/01-project...html" data-splitbee-event="開始閱讀" data-splitbee-event-type="第 1 章">第 1 章</a>
 ```
 
@@ -102,7 +101,7 @@ Server Settings > Integrations > Webhooks > New Webhook
 
 把剛剛 "Copy Webhook URL" 的網址貼進來，並且設定通知訊息，格式是
 
-```
+```json
 {
   "content": "<你的內容>"
 }

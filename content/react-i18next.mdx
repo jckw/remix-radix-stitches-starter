@@ -22,7 +22,7 @@ import { Article } from "~/components/article";
 
 ## 使用套件
 
-```
+```json
 "react": ^17.0.1,
 "next": 11.0.1,
 "next-i18next": ^8.5.5,
@@ -37,13 +37,13 @@ import { Article } from "~/components/article";
 
 必須依賴 React 的 `dangerouslySetInnerHTML` 來顯示：
 
-```
+```jsx
 <ContentTitle dangerouslySetInnerHTML={{__html: t('intro.title')}} />
 ```
 
 若在語系檔裡帶 HTML，也必須用這個方法來顯示，並且在雙引號加上 escape：
 
-```
+```json
 {
 "description":
   "Get started with <a class=\"paragraph-link\" href=\"https://...\" target=\"_blank\" rel=\"noopener\">Onboarding</a>."
@@ -56,7 +56,7 @@ import { Article } from "~/components/article";
 
 多國語系檔有時候會想要使用陣列的方法來呈現：
 
-```
+```json
 "document":
 {
   "items":
@@ -79,7 +79,7 @@ import { Article } from "~/components/article";
 
 如果按照直覺來設定陣列型別：
 
-```
+```jsx
 type ItemProps = {
   name: string;
   description: string;
@@ -96,12 +96,12 @@ type ItemProps = {
 ```
 
 就會遇到錯誤訊息：
-```
+```text
 Property 'map' does not exist on type 'string'.
 ```
 
 2021-11-14 最近在 stackoverflow 找到解法：
-```
+```jsx
 {t<string, ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }) => (
   <li key={index}>
      <strong dangerouslySetInnerHTML={{__html: name}} />
@@ -117,8 +117,10 @@ Property 'map' does not exist on type 'string'.
 [CodeSandbox 連結](https://codesandbox.io/s/react-i18next-typescript-array-example-5xdzk?file=/README.md)
 
 來源：Typescript i18next does not satisfy the constraint 'string | TemplateStringsArray NextJS
+
 先前在 Issue 找到的方法，已經過時：
-```
+
+```jsx
 {t<ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }: ItemProps) => (
   <li key={index}>
      <strong dangerouslySetInnerHTML={{__html: name}} />
@@ -129,13 +131,15 @@ Property 'map' does not exist on type 'string'.
 ```
 
 所以會在最近的版本出現 TS 錯誤：
-```
+
+```text
 Type 'ItemProps[]' does not satisfy the constraint 'string | TemplateStringsArray'.
   Property 'raw' is missing in type 'ItemProps[]' but required in type 'TemplateStringsArray'.
 ```
 
 .map 也有：
-```
+
+```text
 Property 'map' does not exist on type 'TFunctionResult'.
   Property 'map' does not exist on type 'string'.ts(2339)
 ```
