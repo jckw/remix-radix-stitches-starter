@@ -38,14 +38,6 @@ export const Article = styled('article', {
   '& img': {
     maxWidth: '100%',
     margin: '$8 0'
-  },
-
-  '& pre': {
-    margin: '0 0 $16',
-    padding: '$16',
-    overflowX: 'auto',
-    border: '2px solid hsl($shade20)',
-    borderRadius: '12px'
   }
 });
 

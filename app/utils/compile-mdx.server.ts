@@ -48,14 +48,14 @@ export const bundleMDX = async ({ cwd, source }: IBundleMdx) => {
       // Set the `outdir` to a public location for this bundle.
       // console.log("esbuildOptions", resolve("public"));
       // options.outdir = resolve("public", "build", "_assets");
-      options.outdir = resolve("public/build/_assets");
+      options.outdir = resolve("public/build");
       options.loader = {
         ...options.loader,
         ".png": "file",
         ".jpg": "file",
         ".jpeg": "file",
       };
-      // Set the public path to /img/about
+
       options.publicPath = join("/build/_assets");
 
       // Set write to true so that esbuild will output the files.

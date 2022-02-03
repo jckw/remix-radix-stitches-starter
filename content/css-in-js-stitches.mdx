@@ -29,7 +29,7 @@ import { Article, CodeInline } from "~/components/article";
 
 ## 使用環境
 
-```
+```json
 "@stitches/react": "^1.2.5",
 "react": "^17.0.1",
 "next": "^12.0.2"
@@ -40,7 +40,7 @@ import { Article, CodeInline } from "~/components/article";
 
 ## 基本語法
 
-```
+```jsx
 const Sidebar = styled('ul', {
   margin: 0,
   padding: 0,
@@ -50,7 +50,7 @@ const Sidebar = styled('ul', {
 
 跟 `styled-components` 用法差不多，第一個傳入的參數是 HTML 標籤（或沿用其他 `styled` 元件），接著是 CSS 屬性物件，Variants 也要放在裡面。
 
-```
+```jsx
 const Sidebar = styled('ul', {
   padding: 0,
   backgroundColor: 'hsl($shade300)',
@@ -67,7 +67,6 @@ const Sidebar = styled('ul', {
   }
 });
 
-...
 // JSX
 <Sidebar responsive={{ '@initial': 'mobile', 'bp768': 'tablet' }} />
 ```
@@ -78,7 +77,7 @@ const Sidebar = styled('ul', {
 
 [`Theme Tokens`](https://stitches.dev/docs/tokens) 會以 CSS Custom Properties 呈現。`Stitches` 沒有 SCSS 自動編譯變數的功能，所以如果顏色有透明度的需求，建議使用 HSL 或 RGB，把 Token 設定為括弧裡的數字就好，例如：
 
-```
+```json
 theme: {
   colors: {
     shade1600: '162, 2%, 99%',
@@ -89,7 +88,7 @@ theme: {
 
 要用到透明度時就有彈性：
 
-```
+```json
 color: 'hsl($shade1600)',
 backgroundColor: 'hsla($shade1600, 0.25)'
 ```
@@ -98,7 +97,7 @@ backgroundColor: 'hsla($shade1600, 0.25)'
 
 在使用 CSS Grid 時，換行是有用途的，代表不同列。然而直接以單引號來換行：
 
-```
+```json
 grid: '"next" auto
        "prev" auto
        "home" auto / auto'
@@ -108,7 +107,7 @@ grid: '"next" auto
 
 這時候要使用重音符 (grave accent)：
 
-```
+```json
 grid: `"next" auto
        "prev" auto
        "home" auto / auto`
@@ -120,7 +119,7 @@ grid: `"next" auto
 
 Stitches 提供 `global` 樣式，是目前唯一能夠指定 `<body>` 樣式的方法，例如：頁面的背景顏色。
 
-```
+```jsx
 const pageBody = globalCss({
   'body': {
     backgroundColor: 'hsl($shade1600)'
@@ -132,7 +131,7 @@ const pageBody = globalCss({
 
 若有每頁換 `<body>` 樣式的需求，就用 Attribute Selector 來區分。
 
-```
+```jsx
 const pageBody = globalCss({
   'body[data-body-style=pie]': {
     backgroundColor: 'hsl($pie0)'
@@ -142,7 +141,7 @@ const pageBody = globalCss({
 
 接著以 `useEffect`，在載入頁面時加上 `<body>` 的屬性
 
-```
+```jsx
 useEffect(() => {
   document.body.setAttribute('data-body-style', 'pie');
 }, []);
@@ -158,7 +157,7 @@ useEffect(() => {
 
 像這樣很常使用的一組 CSS:
 
-```
+```json
 utils: {
   fullAbsolute: () => {
     position: 'absolute',
@@ -172,8 +171,7 @@ utils: {
 
 沒有必要傳入 props 的時候，用法是：
 
-```
-...
+```json
   '&::before': {
     fullAbsolute: ''
   }
@@ -184,18 +182,18 @@ utils: {
 
 Stitches 升級成 1.0.0 之後，如果也有用 TypeScript，就會發現設定檔出現型別錯誤：
 
-```
+```json
 size: (value) => ({
   width: value,
   height: value
 })
 
-Type '(value: any) => { width: any; height: any; }' is not assignable to type 'never'.ts(2322)
+// Type '(value: any) => { width: any; height: any; }' is not assignable to type 'never'.ts(2322)
 ```
 
 得要指定使用的 Token：
 
-```
+```json
 size: (value: Stitches.ScaleValue<'sizes'>) => ({
   width: value,
   height: value
@@ -208,7 +206,7 @@ size: (value: Stitches.ScaleValue<'sizes'>) => ({
 
 如果用了 `css`
 
-```
+```json
 const label = css({
   color: hsl($shade1200),
   transition: 'color 0.25s ease-out'
@@ -217,7 +215,7 @@ const label = css({
 
 想要把這組樣式用在 `styled` 元件，可以這樣做：
 
-```
+```jsx
 const NameLabel = styled('span', label,
   {
     backgroundColor: 'hsl($shade100)'

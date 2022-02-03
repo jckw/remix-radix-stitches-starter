@@ -2,9 +2,9 @@ import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 import { useMemo } from 'react';
 import {
   type MetaFunction,
+  type LinksFunction,
   type LoaderFunction,
   type RouteHandle,
-  Link,
   json,
   useLoaderData,
 } from 'remix';
@@ -56,6 +56,13 @@ export const meta: MetaFunction = ({ data }) => {
       }, {})),
   };
 };
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'stylesheet',
+    href: '/prism/dracula.css'
+  }
+];
 
 type LoaderData = {
   frontmatter: Frontmatter;
