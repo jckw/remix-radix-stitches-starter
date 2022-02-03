@@ -45,7 +45,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: 'shortcut icon',
-    href: '/favicons/favicon.ico',
+    href: '/favicon.ico',
     type: 'image/png'
   },
   {
