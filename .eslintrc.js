@@ -60,7 +60,13 @@ module.exports = {
     ],
     'import/extensions': [
       'error',
-      { ts: 'never', tsx: 'never', config: 'always', css: 'always' },
+      {
+        ts: 'never',
+        tsx: 'never',
+        mdx: 'always',
+        config: 'always',
+        css: 'always',
+      },
     ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],

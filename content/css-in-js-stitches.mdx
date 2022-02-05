@@ -1,0 +1,230 @@
+---
+status: "published"
+title: "簡單介紹 CSS-In-JS 套件：Stitches"
+description: "Stitches 可以讓 CSS 樣式寫得更清楚，甚至補齊 CSS 先天沒有那麼方便的地方。這篇文章以小訣竅的方式，介紹 Stitches 的特色，包含多行使用情境與 body 樣式的切換方法。"
+datePublished: "2021-07-28"
+dateModified: "2021-12-30"
+meta:
+  - name: og:type
+    content: "article"
+  - name: article:published_time
+    content: 2021-07-28T00:00:00
+  - name: article:author
+    content: "ymcheung"
+slug: "css-in-js-stitches"
+---
+
+import { Article, CodeInline } from "~/components/article";
+
+<Article>
+
+# {frontmatter.title}
+
+`Stitches` 是剛進入穩定 1.0.0 版本的 CSS-In-JS 套件，用起來已經相當成熟，常見的 CSS 規畫都能迎刃而解。
+
+```
+網站：https://stitches.dev
+文件：https://stitches.dev/docs
+```
+
+## 使用環境
+
+```json
+"@stitches/react": "^1.2.5",
+"react": "^17.0.1",
+"next": "^12.0.2"
+```
+這篇文章不會把 <CodeInline>Stitches</CodeInline> 文件裡提到的內容再講一遍，因為已經非常清楚，只會補充特色和小訣竅。
+
+`Stitches` 利用 `styled` 來撰寫 CSS 屬性，跟已經廣泛使用的 `styled-components` 同個方式，而我認為 `Stitches` 可以讓 CSS 樣式寫得更清楚，甚至補齊 CSS 先天沒有那麼方便的地方，`Variants` 功能可以說是 `Stitches` 之所以強大的核心。
+
+## 基本語法
+
+```jsx
+const Sidebar = styled('ul', {
+  margin: 0,
+  padding: 0,
+  backgroundColor: 'hsl($shade300)'
+});
+```
+
+跟 `styled-components` 用法差不多，第一個傳入的參數是 HTML 標籤（或沿用其他 `styled` 元件），接著是 CSS 屬性物件，Variants 也要放在裡面。
+
+```jsx
+const Sidebar = styled('ul', {
+  padding: 0,
+  backgroundColor: 'hsl($shade300)',
+
+  variants: {
+    responsive: {
+      mobile: {
+        margin: '$16',
+      },
+      tablet: {
+        margin: 0
+      }
+    }
+  }
+});
+
+// JSX
+<Sidebar responsive={{ '@initial': 'mobile', 'bp768': 'tablet' }} />
+```
+
+`Stitches` 支援 TypeScript，不過目前參數並未限定型別：`fontWeight: 500` 跟 `fontWeight: '500'` 會得到一樣的 CSS。
+
+## Theme Tokens
+
+[`Theme Tokens`](https://stitches.dev/docs/tokens) 會以 CSS Custom Properties 呈現。`Stitches` 沒有 SCSS 自動編譯變數的功能，所以如果顏色有透明度的需求，建議使用 HSL 或 RGB，把 Token 設定為括弧裡的數字就好，例如：
+
+```json
+theme: {
+  colors: {
+    shade1600: '162, 2%, 99%',
+    ...
+  }
+}
+```
+
+要用到透明度時就有彈性：
+
+```json
+color: 'hsl($shade1600)',
+backgroundColor: 'hsla($shade1600, 0.25)'
+```
+
+## 多行與引號
+
+在使用 CSS Grid 時，換行是有用途的，代表不同列。然而直接以單引號來換行：
+
+```json
+grid: '"next" auto
+       "prev" auto
+       "home" auto / auto'
+```
+
+就會出現字串沒有關好的錯誤訊息：`Unterminated string literal`
+
+這時候要使用重音符 (grave accent)：
+
+```json
+grid: `"next" auto
+       "prev" auto
+       "home" auto / auto`
+```
+
+## 指定 `<body>` 的樣式
+
+這段落只提 React 的做法。
+
+Stitches 提供 `global` 樣式，是目前唯一能夠指定 `<body>` 樣式的方法，例如：頁面的背景顏色。
+
+```jsx
+const pageBody = globalCss({
+  'body': {
+    backgroundColor: 'hsl($shade1600)'
+  }
+});
+```
+
+接著就會發現：一旦切換到其他頁面，卻還保持打開頁面時的 `<body>` 樣式。因為這功能是設計給整個網站每個頁面使用的，換頁也不會變，跟 `styled-components` 不同。
+
+若有每頁換 `<body>` 樣式的需求，就用 Attribute Selector 來區分。
+
+```jsx
+const pageBody = globalCss({
+  'body[data-body-style=pie]': {
+    backgroundColor: 'hsl($pie0)'
+  }
+});
+```
+
+接著以 `useEffect`，在載入頁面時加上 `<body>` 的屬性
+
+```jsx
+useEffect(() => {
+  document.body.setAttribute('data-body-style', 'pie');
+}, []);
+```
+
+這樣子，換頁的時候就會更新 `data-body-style`。
+
+## Utils
+
+[文件](https://stitches.dev/docs/utils)裡其實也講得很清楚了，就像函式可以傳入 props。
+
+經過測試，可以傳入 1 組或不傳入 props，無法傳入 2 組以上。
+
+像這樣很常使用的一組 CSS:
+
+```json
+utils: {
+  fullAbsolute: () => {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  }
+}
+```
+
+沒有必要傳入 props 的時候，用法是：
+
+```json
+  '&::before': {
+    fullAbsolute: ''
+  }
+}
+```
+
+### 以 TypeScript 使用 Utils 的限制
+
+Stitches 升級成 1.0.0 之後，如果也有用 TypeScript，就會發現設定檔出現型別錯誤：
+
+```json
+size: (value) => ({
+  width: value,
+  height: value
+})
+
+// Type '(value: any) => { width: any; height: any; }' is not assignable to type 'never'.ts(2322)
+```
+
+得要指定使用的 Token：
+
+```json
+size: (value: Stitches.ScaleValue<'sizes'>) => ({
+  width: value,
+  height: value
+})
+```
+
+也就是以後 `size` 這個 Util 能傳入的值，必須是在 `sizes` Token 裡已經設定好的，無法像之前可以傳入任意值，如果專案還在東改西改的階段，就少了一些彈性。
+
+## 混搭 `styled` 和 `css`
+
+如果用了 `css`
+
+```json
+const label = css({
+  color: hsl($shade1200),
+  transition: 'color 0.25s ease-out'
+});
+```
+
+想要把這組樣式用在 `styled` 元件，可以這樣做：
+
+```jsx
+const NameLabel = styled('span', label,
+  {
+    backgroundColor: 'hsl($shade100)'
+  }
+);
+```
+
+## 結論
+
+這裡記錄官方文件還沒有詳細說明的地方，但是寫 CSS 的體驗已經非常滿意，如果還有出現其他暫時解法或秘訣，會在這篇文章持續更新。
+
+</Article>

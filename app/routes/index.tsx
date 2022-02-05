@@ -1,99 +1,172 @@
-import { useLoaderData, json, Link } from 'remix'
+import { useLoaderData, Link } from 'remix';
 
-import type { MetaFunction, LoaderFunction } from 'remix'
+import * as postSplitbee from '../../content/analytics-tool-splitbee.mdx';
+import * as postStitches from '../../content/css-in-js-stitches.mdx';
+import * as postNaming from '../../content/naming-conventions.mdx';
+import * as postI18next from '../../content/react-i18next.mdx';
 
-type IndexData = {
-  resources: Array<{ name: string; url: string }>
-  demos: Array<{ name: string; to: string }>
-}
-
-// Loaders provide data to components and are only ever called on the server, so
-// you can connect to a database or run any server side code you want right next
-// to the component that renders it.
-// https://remix.run/api/conventions#loader
-export const loader: LoaderFunction = () => {
-  const data: IndexData = {
-    resources: [
-      {
-        name: 'Remix Docs',
-        url: 'https://remix.run/docs',
-      },
-      {
-        name: 'React Router Docs',
-        url: 'https://reactrouter.com/docs',
-      },
-      {
-        name: 'Remix Discord',
-        url: 'https://discord.gg/VBePs6d',
-      },
-    ],
-    demos: [
-      {
-        to: 'demos/actions',
-        name: 'Actions',
-      },
-      {
-        to: 'demos/about',
-        name: 'Nested Routes, CSS loading/unloading',
-      },
-      {
-        to: 'demos/params',
-        name: 'URL Params and Error Boundaries',
-      },
-    ],
-  }
-
-  // https://remix.run/api/remix#json
-  return json(data)
-}
+import type { MetaFunction, LoaderFunction, LinksFunction } from 'remix';
+import { ArticleHeading, ArticleDescription } from '~/components/article';
+import { styled } from '~/stitches.config';
+import * as CONSTANT from '~/utils/CONSTANTS';
+import { ListItem } from '~/utils/layout';
 
 // https://remix.run/api/conventions#meta
 export const meta: MetaFunction = () => ({
-  title: 'Remix Starter',
-  description: 'Welcome to remix!',
+  title: CONSTANT.SITENAME,
+  description: CONSTANT.SITEDESCRIPTION,
+  'og:title': CONSTANT.SITENAME,
+  'og:description': CONSTANT.SITEDESCRIPTION,
+  'og:url': 'https://build.intersection.tw',
+  'og:image': 'https://build.intersection.tw/og/home.jpg'
 })
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'canonical',
+    href: 'https://build.intersection.tw'
+  }
+];
+
+type mdxData = {
+  filename: string,
+  attributes: {
+    status: string,
+    title: string,
+    description: string,
+    sticker: string,
+    dateModified: string
+  }
+}
+
+type postData = {
+  title: string,
+  slug: string,
+  description: string,
+  status: string,
+  dateModified: string
+}
+
+function postFromModule({ filename, attributes }: mdxData) {
+  return {
+    title: attributes.title,
+    slug: filename.replace(/\.mdx?$/, ""),
+    description: attributes.description,
+    status: attributes.status,
+    dateModified: attributes.dateModified
+  };
+}
+
+export const loader: LoaderFunction = () =>
+  // Return metadata about each of the posts for display on the index page.
+  // Referencing the posts here instead of in the Index component down below
+  // lets us avoid bundling the actual posts themselves in the bundle for the
+  // index page.
+[
+  postFromModule(postNaming),
+  postFromModule(postStitches),
+  postFromModule(postSplitbee),
+  postFromModule(postI18next)
+];
+
+const IndexList = styled('ul', {
+  display: 'grid',
+  rowGap: '48px',
+  margin: 0,
+  padding: 0
+});
+
+const IndexLink = styled(Link, {
+  display: 'block',
+  textDecoration: 'none'
+});
+
+const Sticker = styled('figure', {
+  height: '40px',
+  margin: '0 0 $8',
+  padding: 0
+});
+
+const Timestamp = styled('time', {
+  display: 'inline-block',
+  marginBottom: '$16',
+  color: 'hsl($shade100)',
+  fontSize: '$14',
+  lineHeight: '12px',
+
+  variants: {
+    responsive: {
+      mobile: {
+        marginLeft: '-$16'
+      },
+      tablet: {
+        marginLeft: 0
+      }
+    }
+  },
+
+  '&::before': {
+    display: 'inline-block',
+    width: '$60',
+    height: '$12',
+    content: '',
+    marginRight: '$8',
+    backgroundColor: 'hsl($shade20)'
+  }
+});
+
+const Action = styled('span', {
+  display: 'block',
+  width: '100px',
+  marginLeft: 'auto',
+  paddingRight: '$16',
+  color: 'hsl($shade10)',
+  fontSize: '1.6rem',
+  fontWeight: 600,
+  lineHeight: '40px',
+  textAlign: 'right',
+  backgroundColor: 'hsl($accent)',
+
+  variants: {
+    responsive: {
+      mobile: {
+        marginRight: '-$16'
+      },
+      tablet: {
+        marginRight: 0
+      }
+    }
+  },
+});
 
 // https://remix.run/guides/routing#index-routes
 export default function Index() {
-  const data = useLoaderData<IndexData>()
+  const posts = useLoaderData();
 
   return (
-    <div className="remix__page">
-      <main>
-        <h2>Welcome to Remix!</h2>
-        <p>We're stoked that you're here. 🥳</p>
-        <p>
-          Feel free to take a look around the code to see how Remix does things,
-          it might be a bit different than what you’re used to. When you're
-          ready to dive deeper, we've got plenty of resources to get you
-          up-and-running quickly.
-        </p>
-        <p>
-          Check out all the demos in this starter, and then just delete the{' '}
-          <code>app/routes/demos</code> and <code>app/styles/demos</code>{' '}
-          folders when you're ready to turn this into your next project.
-        </p>
-      </main>
-      <aside>
-        <h2>Demos In This App</h2>
-        <ul>
-          {data.demos.map((demo) => (
-            <li key={demo.to} className="remix__page__resource">
-              <Link to={demo.to} prefetch="intent">
-                {demo.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <h2>Resources</h2>
-        <ul>
-          {data.resources.map((resource) => (
-            <li key={resource.url} className="remix__page__resource">
-              <a href={resource.url}>{resource.name}</a>
-            </li>
-          ))}
-        </ul>
-      </aside>
-    </div>
+      <IndexList>
+      {posts.map(({ title, slug, description, status, dateModified }: postData) => (
+        (status === 'published') &&
+          <ListItem nomark key={slug}>
+            <IndexLink to={slug}>
+              <Sticker>
+                <img src={`/stickers/${slug}.svg`} alt="" />
+              </Sticker>
+              <ArticleHeading purpose="index">
+                {title}
+              </ArticleHeading>
+              <Timestamp responsive={{ '@initial': 'mobile', '@m768': 'tablet' }}>
+                {dateModified}
+              </Timestamp>
+              <ArticleDescription>
+                {description}
+              </ArticleDescription>
+              <Action responsive={{ '@initial': 'mobile', '@m768': 'tablet' }}>
+                閱讀
+              </Action>
+            </IndexLink>
+          </ListItem>
+      ))}
+    </IndexList>
   )
 }

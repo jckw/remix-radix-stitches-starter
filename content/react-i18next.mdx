@@ -1,0 +1,150 @@
+---
+status: "published"
+title: "使用 react-i18next 的瑣碎注意事項"
+description: "i18next 的文件寫得夠完整，所以在決定作品集要做多國語系時，用這一款來輔助。這篇文章記錄文件裡找不到，只好從 Issue 和 stackoverflow 翻找的問題解方。"
+datePublished: "2021-09-01"
+dateModified: "2021-11-30"
+meta:
+  - name: og:type
+    content: "article"
+  - name: article:published_time
+    content: 2021-09-01T00:00:00
+  - name: article:author
+    content: "ymcheung"
+slug: "react-i18next"
+---
+
+import { Article } from "~/components/article";
+
+<Article>
+
+# {frontmatter.title}
+
+## 使用套件
+
+```json
+"react": ^17.0.1,
+"next": 11.0.1,
+"next-i18next": ^8.5.5,
+"typescript": 4.3.2
+```
+
+覺得 [i18next](https://www.i18next.com) 的文件寫得夠完整，所以在決定[作品集](https://ymcheung.tw)要做多國語系時，用這一款來輔助，避免重新發明輪胎，[next-i18next](https://github.com/isaachinman/next-i18next) 又做好許多 `Next.js` 和 `i18next` 之間的整合。然而，使用上還是有向技術社群求助的經驗，在這一篇集合起來。
+
+## 使用特殊符號與 HTML 語法
+
+撰寫 HTML 的時候，遇到特殊符號，例如 &copy;，會去 [Character Entity Reference](https://dev.w3.org/html5/html-author/charref) 查詢（關鍵字打 _html5 entity_），並且寫成 `&copy;`。這樣寫在語系檔裡面，就會照樣輸出 `&copy;`。
+
+必須依賴 React 的 `dangerouslySetInnerHTML` 來顯示：
+
+```jsx
+<ContentTitle dangerouslySetInnerHTML={{__html: t('intro.title')}} />
+```
+
+若在語系檔裡帶 HTML，也必須用這個方法來顯示，並且在雙引號加上 escape：
+
+```json
+{
+"description":
+  "Get started with <a class=\"paragraph-link\" href=\"https://...\" target=\"_blank\" rel=\"noopener\">Onboarding</a>."
+}
+```
+
+`dangerouslySetInnerHTML` 的缺點是無法放置其他元件，結構寫起來很不一樣。
+
+## TypeScript 的陣列問題
+
+多國語系檔有時候會想要使用陣列的方法來呈現：
+
+```json
+"document":
+{
+  "items":
+  [
+    {
+      "name":
+        "name 0",
+      "description":
+        "description 0"
+    },
+    {
+      "name":
+        "name 1",
+      "description":
+        "description 1"
+    }
+  ]
+}
+```
+
+如果按照直覺來設定陣列型別：
+
+```jsx
+type ItemProps = {
+  name: string;
+  description: string;
+  index: number;
+};
+
+{t('document.items', {returnObjects: true}).map(({ name, description, index }: ItemProps) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
+
+就會遇到錯誤訊息：
+```text
+Property 'map' does not exist on type 'string'.
+```
+
+2021-11-14 最近在 stackoverflow 找到解法：
+```jsx
+{t<string, ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
+
+並且從前端社群得知這是設定為泛型，因為 i18next 的 returnObjects 允許回傳任何形式的物件，這是在告知型別檢查器說：這裡是陣列。
+做了一份 CodeSandbox 範例：
+
+[CodeSandbox 連結](https://codesandbox.io/s/react-i18next-typescript-array-example-5xdzk?file=/README.md)
+
+來源：Typescript i18next does not satisfy the constraint 'string | TemplateStringsArray NextJS
+
+先前在 Issue 找到的方法，已經過時：
+
+```jsx
+{t<ItemProps[]>('document.items', {returnObjects: true}).map(({ name, description, index }: ItemProps) => (
+  <li key={index}>
+     <strong dangerouslySetInnerHTML={{__html: name}} />
+     <Paragraph dangerouslySetInnerHTML={{__html: description}} />
+   </li>
+   )
+)}
+```
+
+所以會在最近的版本出現 TS 錯誤：
+
+```text
+Type 'ItemProps[]' does not satisfy the constraint 'string | TemplateStringsArray'.
+  Property 'raw' is missing in type 'ItemProps[]' but required in type 'TemplateStringsArray'.
+```
+
+.map 也有：
+
+```text
+Property 'map' does not exist on type 'TFunctionResult'.
+  Property 'map' does not exist on type 'string'.ts(2339)
+```
+
+## 結論
+`react-i18next` 的[說明文件](https://react.i18next.com/latest/typescript)上其實有 TypeScript 型別設定的教學，不過跟著做之後，在使用 `next-i18next` 的 Next.js 專案沒有效果（全部都是 `any`）。
+
+</Article>
