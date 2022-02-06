@@ -30,5 +30,6 @@ Temporary Items
 .vercel
 .output
 
+build/
 public/build
 api/_build

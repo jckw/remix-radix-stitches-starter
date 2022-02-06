@@ -1,0 +1,4 @@
+User-agent: AdsBot-Google
+Disallow: /
+
+Sitemap: https://build.intersection.tw/sitemap.xml
