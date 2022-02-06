@@ -1,6 +1,6 @@
 {
-  "private": true,
   "name": "build-ui",
+  "private": true,
   "description": "喜歡的 UI 就要親手做出來",
   "license": "",
   "scripts": {
@@ -8,12 +8,13 @@
     "dev": "node -r dotenv/config node_modules/.bin/remix dev",
     "prettify": "prettier --write .",
     "lint": "eslint",
-    "postinstall": "remix setup node"
+    "postinstall": "remix setup node",
+    "deploy": "fly deploy --remote-only",
+    "start": "remix-serve build"
   },
   "dependencies": {
     "@remix-run/react": "^1.1.3",
     "@remix-run/serve": "^1.1.3",
-    "@remix-run/vercel": "^1.1.3",
     "@stitches/react": "^1.2.6",
     "dotenv": "^14.2.0",
     "esbuild": "^0.14.14",
