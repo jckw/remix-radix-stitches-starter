@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useMatches,
   useCatch,
 } from 'remix';
 
@@ -95,6 +96,10 @@ function Document({
 
   globalStyles();
 
+  const matches = useMatches();
+  const match = matches.find((match) => match.data && match.data.canonical);
+  const canonical = match?.data.canonical;
+
   return (
     <html lang="zh-Hant-TW">
       <head>
@@ -102,6 +107,7 @@ function Document({
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         {title ? <title>{title}</title> : null}
         <Meta />
+        {!!canonical && <link rel="canonical" href={canonical} />}
         <Links />
         <script data-respect-dnt async src="https://cdn.splitbee.io/sb.js" />
       </head>
