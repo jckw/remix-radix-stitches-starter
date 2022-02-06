@@ -103,6 +103,7 @@ function Document({
         {title ? <title>{title}</title> : null}
         <Meta />
         <Links />
+        <script data-respect-dnt async src="https://cdn.splitbee.io/sb.js" />
       </head>
       <DocumentBody responsive={{ '@initial': 'mobile', '@m992': 'desktop' }}>
         {children}
